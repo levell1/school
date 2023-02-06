@@ -1,0 +1,6 @@
+#comment_view li:nth-child(1) {	padding: 15px; border-bottom: solid 1px #aaaaaa; }
+#comment_view .col1 { margin-right: 50px;  }
+#comment_view .col2 { width: 600px; }
+#comment_view .col3 { float: right; }
+
+#comment_view li{	padding: 15px; border-bottom: solid 1px #aaaaaa; }
