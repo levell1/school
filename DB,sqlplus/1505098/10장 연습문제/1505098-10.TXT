@@ -1,0 +1,186 @@
+SQL> SELECT * FROM USER_CATALOG;
+
+TABLE_NAME                     TABLE_TYPE                                                                                                             
+------------------------------ ----------------------                                                                                                 
+COMPUTER_STUDENT               TABLE                                                                                                                  
+COURSE                         TABLE                                                                                                                  
+DEPARTMENT                     TABLE                                                                                                                  
+EC_BASKET                      TABLE                                                                                                                  
+EC_MEMBER                      TABLE                                                                                                                  
+EC_ORDER                       TABLE                                                                                                                  
+EC_PRODUCT                     TABLE                                                                                                                  
+PROFESSOR                      TABLE                                                                                                                  
+SCORE_GRADE                    TABLE                                                                                                                  
+SG_SCORES                      TABLE                                                                                                                  
+STUDENT                        TABLE                                                                                                                  
+T_COURSE                       TABLE                                                                                                                  
+T_SG_SCORES                    TABLE                                                                                                                  
+
+13 개의 행이 선택되었습니다.
+
+SQL> GET APP10-01-1
+  1  SELECT O.ORDER_ID, P.PRODUCT_CODE,PRODUCT_NAME,ORDER_QTY,CMONEY "주문금액"
+  2  FROM   EC_ORDER O,EC_PRODUCT P
+  3  WHERE  O.Product_Code = P.Product_Code
+  4  AND    O.ORDER_ID = 'jupark'
+  5* ORDER  BY 1
+SQL> /
+
+ORDER_ID   PRODUCT_CODE PRODUCT_NAME    ORDER_QTY              주문금액                                                                               
+---------- ------------ -------------- ---------- ---------------------                                                                               
+jupark     CM01         개인용컴퓨터            5           ￦3,735,000                                                                               
+jupark     PRT02        프린터                  5           ￦4,300,000                                                                               
+
+SQL> GET APP10-01-2
+  1  SELECT O.ORDER_ID, P.PRODUCT_CODE,PRODUCT_NAME,ORDER_QTY,CMONEY "주문금액"
+  2  FROM   EC_ORDER O INNER JOIN EC_PRODUCT P
+  3  				ON(O.Product_Code = P.Product_Code)
+  4  WHERE  O.ORDER_ID = 'jupark'
+  5* ORDER  BY 1
+SQL> /
+
+ORDER_ID   PRODUCT_CODE PRODUCT_NAME    ORDER_QTY              주문금액                                                                               
+---------- ------------ -------------- ---------- ---------------------                                                                               
+jupark     CM01         개인용컴퓨터            5           ￦3,735,000                                                                               
+jupark     PRT02        프린터                  5           ￦4,300,000                                                                               
+
+SQL> GET APP10-02-1
+  1  SELECT M.NAME, M.TELEPHONE,M.ADDRESS,P.PRODUCT_NAME "배달상품",O.ORDER_QTY"수량"
+  2  FROM   EC_ORDER O,EC_PRODUCT P,EC_MEMBER M
+  3  WHERE  O.Product_Code = P.Product_Code
+  4  AND    O.ORDER_ID = M.USERID
+  5  AND    O.GUBUN ='결제'
+  6* ORDER  BY 1
+SQL> /
+
+NAME     TELEPHONE     ADDRESS              배달상품             수량                                                                                 
+-------- ------------- -------------------- -------------- ----------                                                                                 
+박지운   011-8011-2923 서울특별시 영등포구  개인용컴퓨터            5                                                                                 
+박지운   011-8011-2923 서울특별시 영등포구  프린터                  5                                                                                 
+조철상   010-8884-8884 서울특별시 은평구    개인용컴퓨터            1                                                                                 
+
+SQL>  GET APP10-02-2
+  1  SELECT M.NAME, M.TELEPHONE,M.ADDRESS,P.PRODUCT_NAME "배달상품",O.ORDER_QTY"수량"
+  2  FROM   EC_ORDER O INNER JOIN EC_PRODUCT P
+  3  				ON(O.Product_Code = P.Product_Code)
+  4  		  INNER JOIN EC_MEMBER M
+  5  				ON(O.ORDER_ID = M.USERID)
+  6  WHERE  O.GUBUN ='결제'
+  7* ORDER  BY 1
+SQL> /
+
+NAME     TELEPHONE     ADDRESS              배달상품             수량                                                                                 
+-------- ------------- -------------------- -------------- ----------                                                                                 
+박지운   011-8011-2923 서울특별시 영등포구  개인용컴퓨터            5                                                                                 
+박지운   011-8011-2923 서울특별시 영등포구  프린터                  5                                                                                 
+조철상   010-8884-8884 서울특별시 은평구    개인용컴퓨터            1                                                                                 
+
+SQL>  GET APP10-03-1
+  1  SELECT P.PRODUCT_NAME "주문상품", O.ORDER_QTY "수량" , P.UNIT_PRICE"단가",O.ORDER_ID,
+  2         (P.UNIT_PRICE * O.ORDER_QTY) "주문금액"
+  3  FROM   EC_ORDER O,EC_PRODUCT P 
+  4  WHERE  P.PRODUCT_CODE= O.PRODUCT_CODE (+)
+  5* ORDER  BY 1
+SQL> /
+
+주문상품                   수량                  단가 ORDER_ID                주문금액                                                                
+-------------------- ---------- --------------------- ---------- ---------------------                                                                
+G7 ThinQ                                    ￦822,000                                                                                                 
+TV                                        ￦1,920,000                                                                                                 
+TV                                          ￦980,000                                                                                                 
+TV                            1           ￦1,060,000 jskang               ￦1,060,000                                                                
+TV                            1           ￦1,785,000 imjung               ￦1,785,000                                                                
+개인용컴퓨터                  1             ￦740,000 cscho                  ￦740,000                                                                
+개인용컴퓨터                                ￦434,000                                                                                                 
+개인용컴퓨터                  5             ￦747,000 jupark               ￦3,735,000                                                                
+개인용컴퓨터                  1             ￦747,000 cscho                  ￦747,000                                                                
+갤럭시노트                                  ￦829,000                                                                                                 
+노트북컴퓨터                  1             ￦930,000 usko                   ￦930,000                                                                
+노트북컴퓨터                  1             ￦750,000 supark                 ￦750,000                                                                
+노트북컴퓨터                                ￦665,000                                                                                                 
+아이폰                                      ￦816,000                                                                                                 
+의자                          1              ￦70,000 kcchoi                  ￦70,000                                                                
+책상                          1              ￦53,000 kcchoi                  ￦53,000                                                                
+프린터                        1             ￦272,000 uskang                 ￦272,000                                                                
+프린터                        1             ￦235,000 supark                 ￦235,000                                                                
+프린터                                      ￦482,000                                                                                                 
+프린터                        5             ￦860,000 jupark               ￦4,300,000                                                                
+
+20 개의 행이 선택되었습니다.
+
+SQL>  GET APP10-03-2
+  1  SELECT PRODUCT_NAME "주문상품", ORDER_QTY "수량" , UNIT_PRICE"단가",ORDER_ID,
+  2         (UNIT_PRICE * ORDER_QTY) "주문금액"
+  3  FROM   EC_PRODUCT  LEFT OUTER JOIN EC_ORDER   USING(PRODUCT_CODE)
+  4* ORDER  BY 1
+SQL> /
+
+주문상품                   수량                  단가 ORDER_ID                주문금액
+-------------------- ---------- --------------------- ---------- ---------------------
+G7 ThinQ                                    ￦822,000
+TV                                        ￦1,920,000
+TV                                          ￦980,000
+TV                            1           ￦1,060,000 jskang               ￦1,060,000
+TV                            1           ￦1,785,000 imjung               ￦1,785,000
+개인용컴퓨터                  1             ￦740,000 cscho                  ￦740,000
+개인용컴퓨터                                ￦434,000
+개인용컴퓨터                  5             ￦747,000 jupark               ￦3,735,000
+개인용컴퓨터                  1             ￦747,000 cscho                  ￦747,000
+갤럭시노트                                  ￦829,000
+노트북컴퓨터                  1             ￦930,000 usko                   ￦930,000
+노트북컴퓨터                  1             ￦750,000 supark                 ￦750,000
+노트북컴퓨터                                ￦665,000
+아이폰                                      ￦816,000
+의자                          1              ￦70,000 kcchoi                  ￦70,000
+책상                          1              ￦53,000 kcchoi                  ￦53,000
+프린터                        1             ￦272,000 uskang                 ￦272,000
+프린터                        1             ￦235,000 supark                 ￦235,000
+프린터                                      ￦482,000
+프린터                        5             ￦860,000 jupark               ￦4,300,000
+
+20 개의 행이 선택되었습니다.
+
+SQL>  GET APP10-04
+  1  SELECT PRODUCT_CODE, PRODUCT_NAME, UNIT_PRICE,LEFT_QTY
+  2  FROM   EC_PRODUCT
+  3  WHERE  PRODUCT_CODE NOT IN (SELECT PRODUCT_CODE
+  4                              FROM   EC_ORDER)
+  5* ORDER  BY 1
+SQL> /
+
+PRODUCT_CODE PRODUCT_NAME   UNIT_PRICE   LEFT_QTY                                                                                                     
+------------ -------------- ---------- ----------                                                                                                     
+CM02         개인용컴퓨터       434000         20                                                                                                     
+NB03         노트북컴퓨터       665000         10                                                                                                     
+PRT04        프린터             482000          5                                                                                                     
+SP01         아이폰             816000         10                                                                                                     
+SP02         갤럭시노트         829000         15                                                                                                     
+SP03         G7 ThinQ           822000         10                                                                                                     
+TV02         TV                 980000         10                                                                                                     
+TV04         TV                1920000          5                                                                                                     
+
+8 개의 행이 선택되었습니다.
+
+SQL>  GET APP10-05
+  1  SELECT USERID, NAME,TIMESTAMP
+  2  FROM   EC_MEMBER
+  3  WHERE  USERID NOT IN (SELECT ORDER_ID
+  4                        FROM   EC_ORDER)
+  5* ORDER  BY 1
+SQL> /
+
+USERID     NAME     TIMESTAM                                                                                                                          
+---------- -------- --------                                                                                                                          
+hskim      김혜수   18/01/14                                                                                                                          
+mhlee      이민형   18/03/03                                                                                                                          
+mskim      김미선   18/07/11                                                                                                                          
+sbhong     홍서빈   18/02/01                                                                                                                          
+shchoi     최상희   17/11/10                                                                                                                          
+shlee      이상혁   18/07/15                                                                                                                          
+ujjung     정유진   18/07/11                                                                                                                          
+uychoi     최윤영   18/07/15                                                                                                                          
+
+8 개의 행이 선택되었습니다.
+
+SQL> 
+SQL> SPOOL OFF

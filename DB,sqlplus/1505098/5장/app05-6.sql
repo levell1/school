@@ -1,0 +1,3 @@
+ALTER TABLE EC_Order
+MODIFY (Gubun VARCHAR2(20))
+/

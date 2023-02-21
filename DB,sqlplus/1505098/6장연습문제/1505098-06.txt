@@ -1,0 +1,142 @@
+SQL> SELECT*FROM USER_CATALOG;
+
+TABLE_NAME                     TABLE_TYPE                                                                                                             
+------------------------------ ----------------------                                                                                                 
+COURSE                         TABLE                                                                                                                  
+DEPARTMENT                     TABLE                                                                                                                  
+EC_BASKET                      TABLE                                                                                                                  
+EC_MEMBER                      TABLE                                                                                                                  
+EC_ORDER                       TABLE                                                                                                                  
+EC_PRODUCT                     TABLE                                                                                                                  
+PROFESSOR                      TABLE                                                                                                                  
+SCORE_GRADE                    TABLE                                                                                                                  
+SG_SCORES                      TABLE                                                                                                                  
+STUDENT                        TABLE                                                                                                                  
+T_COURSE                       TABLE                                                                                                                  
+T_SG_SCORES                    TABLE                                                                                                                  
+
+12 개의 행이 선택되었습니다.
+
+SQL> get app06-01.sql
+  1  SELECT Product_Code, Product_Name, Unit_Price
+  2  FROM   EC_Product
+  3* WHERE  Unit_Price >1000000
+SQL> /
+
+PRODUCT_CODE PRODUCT_NAME   UNIT_PRICE                                                                                                                
+------------ -------------- ----------                                                                                                                
+TV01         TV                1060000                                                                                                                
+TV03         TV                1785000                                                                                                                
+TV04         TV                1920000                                                                                                                
+
+SQL> get app06-02
+  1  SELECT  UserID,  Name,  Regist_No,  Address
+  2  FROM    EC_Member
+  3* WHERE   Address LIKE '서울%'
+SQL> /
+
+USERID     NAME     REGIST_NO      ADDRESS                                                                                                            
+---------- -------- -------------- --------------------                                                                                               
+jupark     박지운   951214-1****** 서울특별시 영등포구                                                                                                
+imjung     정일미   860807-2****** 서울특별시 송파구                                                                                                  
+cscho      조철상   650707-1****** 서울특별시 은평구                                                                                                  
+usko       고우선   010102-4****** 서울특별시 강남구                                                                                                  
+ujjung     정유진   901225-2****** 서울특별시 종로구                                                                                                  
+
+SQL> get app06-03
+  1  SELECT *
+  2  FROM   EC_Basket
+  3* WHERE  Order_Date = '18/07/11'
+SQL> /
+
+ORDER_NO     ORDER_ID   PRODUCT_CODE  ORDER_QTY ORDER_DA                                                                                              
+------------ ---------- ------------ ---------- --------                                                                                              
+180711001    usko       TV01                  1 18/07/11                                                                                              
+180711002    hskim      CM01                  1 18/07/11                                                                                              
+180711003    mskim      TV01                  1 18/07/11                                                                                              
+180711004    mhlee      NB02                  1 18/07/11                                                                                              
+180711005    mhlee      CM03                  1 18/07/11                                                                                              
+
+SQL> get app06-04
+  1  SELECT Order_No, Product_Code, Order_Qty, Csel, CMoney, CDate, Gubun
+  2  FROM   EC_Order
+  3* WHERE  Csel IS NOT NULL AND Gubun = '결제'
+SQL> /
+
+ORDER_NO     PRODUCT_CODE  ORDER_QTY CSEL           CMONEY CDATE    GUBUN                                                                             
+------------ ------------ ---------- ---------- ---------- -------- --------------------                                                              
+180505002    DK01                  1 신용카드        53000 18/05/07 결제                                                                              
+180505003    CH01                  1 계좌이체        70000 18/05/07 결제                                                                              
+
+SQL> get app06-05
+  1  SELECT UserId, Name,  Regist_No
+  2  FROM   EC_Member
+  3* WHERE  Name LIKE '%우%'
+SQL> /
+
+USERID     NAME     REGIST_NO                                                                                                                         
+---------- -------- --------------                                                                                                                    
+usko       고우선   010102-4******                                                                                                                    
+supark     박세우   030914-3******                                                                                                                    
+
+SQL> get app06-06
+  1  SELECT Order_No, Order_ID, Product_Code, Csel, Gubun
+  2  FROM   EC_Order
+  3  WHERE  Csel !='신용카드' AND Gubun ='배달'
+  4* ORDER  BY 2
+SQL> /
+
+ORDER_NO     ORDER_ID   PRODUCT_CODE CSEL       GUBUN                                                                                                 
+------------ ---------- ------------ ---------- --------------------                                                                                  
+180412001    cscho      CM03         계좌이체   배달                                                                                                  
+180204001    supark     NB02         현금입금   배달                                                                                                  
+180311001    supark     PRT01        현금입금   배달                                                                                                  
+180403001    uskang     PRT03        현금입금   배달                                                                                                  
+
+SQL> get app06-07
+  1  SELECT Product_Code, Product_Name, Unit_Price, Left_Qty, Company
+  2  FROM   EC_Product
+  3  WHERE  Unit_Price BETWEEN 300000 AND 500000
+  4* ORDER  BY 3 DESC
+SQL> /
+
+PRODUCT_CODE PRODUCT_NAME   UNIT_PRICE   LEFT_QTY COMPANY                                                                                             
+------------ -------------- ---------- ---------- ----------                                                                                          
+PRT04        프린터             482000          5 HP                                                                                                  
+CM02         개인용컴퓨터       434000         20 Samsung                                                                                             
+
+SQL> get app06-08
+  1  SELECT Order_No, Order_ID, CMoney, CDate, Csel
+  2  FROM   EC_Order
+  3* WHERE  Csel = '신용카드'
+SQL> /
+
+ORDER_NO     ORDER_ID       CMONEY CDATE    CSEL                                                                                                      
+------------ ---------- ---------- -------- ----------                                                                                                
+180205001    usko           930000 18/02/15 신용카드                                                                                                  
+180315001    imjung        1785000 18/03/15 신용카드                                                                                                  
+180505002    kcchoi          53000 18/05/07 신용카드                                                                                                  
+
+SQL> get app06-09
+  1  SELECT Order_No, Order_Id, Product_Code,  Order_Qty,  CMoney, Gubun
+  2  FROM   EC_Order
+  3* WHERE  Gubun IS NULL
+SQL> /
+
+ORDER_NO     ORDER_ID   PRODUCT_CODE  ORDER_QTY     CMONEY GUBUN                                                                                      
+------------ ---------- ------------ ---------- ---------- --------------------                                                                       
+180707001    jupark     CM01                  5    3735000                                                                                            
+180707002    jupark     PRT02                 5    4300000                                                                                            
+180707003    cscho      CM01                  1     747000                                                                                            
+
+SQL> get app06-10
+  1  SELECT Order_Id,  Product_Code, Order_Qty,  Csel, CMoney,  Gubun
+  2  FROM   EC_Order
+  3* WHERE  Order_ID ='usko'
+SQL> /
+
+ORDER_ID   PRODUCT_CODE  ORDER_QTY CSEL           CMONEY GUBUN                                                                                        
+---------- ------------ ---------- ---------- ---------- --------------------                                                                         
+usko       NB01                  1 신용카드       930000 배달                                                                                         
+
+SQL> spool off

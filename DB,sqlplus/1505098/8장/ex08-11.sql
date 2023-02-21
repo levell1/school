@@ -1,0 +1,2 @@
+SELECT FLOOR(100/3) " ¸ò", MOD(100,3) "³ª¸ÓÁö" FROM DUAL
+/

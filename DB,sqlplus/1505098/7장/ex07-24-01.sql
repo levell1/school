@@ -1,0 +1,3 @@
+ALTER TABLE Course
+DROP  CONSTRAINT Course_fk
+/

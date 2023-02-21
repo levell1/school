@@ -1,0 +1,5 @@
+SELECT Student_ID, Course_ID, Score
+FROM   SG_Scores
+WHERE  Score NOT BETWEEN 60 AND 100
+ORDER  BY 3 DESC
+/

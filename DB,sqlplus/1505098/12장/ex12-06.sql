@@ -1,0 +1,3 @@
+SELECT Dept_Seq.NEXTVAL, Dept_ID,Dept_Name
+FROM   DEPARTMENT
+/

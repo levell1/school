@@ -1,0 +1,647 @@
+학번 : 1505098			성명 : 김종욱
+오라클 사용자명 : stud405	Directory명 : DB-SQL	제출일자 : 2019-06-15
+
+5장 : 테이블설계			[예제54개] 연습문제 [11]
+6장 : 데이터베이스 검색			[예제22개] 연습문제 [10]
+7장 : 데이터베이스 수정			[예제68개] 연습문제 [13]
+8장 : 단일 행 SQL 함수			[예제47개] 연습문제 [5]
+9장 : 다중 행 SQL 함수			[예제22개] 연습문제 [7]
+10장 : 조인				[예제33개] 연습문제 [8]
+11장 : 서브쿼리				[예제36개] 연습문제 [17]
+12장 : 시퀀스와 뷰			[예제22개] 연습문제 [11]
+13장 : 인덱스				[예제16개] 연습문제 [11]
+					총 파일수 : 413개
+
+SQL> SET ECHO ON
+SQL> SET LIN 150
+SQL> @ex05-03.sql
+SQL> SELECT * FROM TAB
+  2  /
+
+TNAME                          TABTYPE  CLUSTERID                                                                                                     
+------------------------------ ------- ----------                                                                                                     
+COMPUTER_STUDENT               TABLE                                                                                                                  
+COURSE                         TABLE                                                                                                                  
+COURSE_NVL_VIEW                VIEW                                                                                                                   
+COURSE_TEMP                    TABLE                                                                                                                  
+DEPARTMENT                     TABLE                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$I       TABLE                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$K       TABLE                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$N       TABLE                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$R       TABLE                                                                                                                  
+DR$STUDENT_ADDRESS_INX$I       TABLE                                                                                                                  
+DR$STUDENT_ADDRESS_INX$K       TABLE                                                                                                                  
+DR$STUDENT_ADDRESS_INX$N       TABLE                                                                                                                  
+DR$STUDENT_ADDRESS_INX$R       TABLE                                                                                                                  
+EC_BASKET                      TABLE                                                                                                                  
+EC_MEMBER                      TABLE                                                                                                                  
+EC_ORDER                       TABLE                                                                                                                  
+EC_PRODUCT                     TABLE                                                                                                                  
+EMPTY_ORDER                    TABLE                                                                                                                  
+PROFESSOR                      TABLE                                                                                                                  
+PRO_COURSE_CNT                 VIEW                                                                                                                   
+SCORE_GRADE                    TABLE                                                                                                                  
+SCORE_LIST                     VIEW                                                                                                                   
+
+TNAME                          TABTYPE  CLUSTERID                                                                                                     
+------------------------------ ------- ----------                                                                                                     
+SG_SCORES                      TABLE                                                                                                                  
+STUDENT                        TABLE                                                                                                                  
+STUDENT_BUSINESS_VIEW          VIEW                                                                                                                   
+STUDENT_COMPUTER               TABLE                                                                                                                  
+T_COMPUTER                     TABLE                                                                                                                  
+T_COURSE                       TABLE                                                                                                                  
+T_SG_SCORES                    TABLE                                                                                                                  
+
+29 개의 행이 선택되었습니다.
+
+SQL> @ex06-12.sql
+SQL> SELECT Dept_ID, Year,Student_ID, Name
+  2  FROM   Student
+  3  WHERE  Name LIKE '이%'
+  4  /
+
+DEPT_ID  Y STUDENT_ID NAME                                                                                                                            
+-------- - ---------- --------                                                                                                                        
+행정     1 A1701      이미나                                                                                                                          
+컴공     2 C1701      이정민                                                                                                                          
+정통     2 T1702      이정필                                                                                                                          
+
+SQL> @ex07-26-04.sql
+SQL> SELECT * FROM Course
+  2  /
+
+COURS TITLE              C_NUMBER PRO COURSE_FEES                                                                                                     
+----- ---------------- ---------- --- -----------                                                                                                     
+L0011 TOEIC연구                 2                                                                                                                     
+L0013 문학개론                  2                                                                                                                     
+L1011 컴퓨터구조                2 P11                                                                                                                 
+L1012 웹디자인                  2           20000                                                                                                     
+L1021 데이터베이스              2 P12                                                                                                                 
+L1022 정보통신개론              2 P21                                                                                                                 
+L1031 SQL응용                   3 P12       50000                                                                                                     
+L1032 JAVA                      3 P13       30000                                                                                                     
+L1041 컴퓨터네트워크            2 P21                                                                                                                 
+L1042 델파이                    3 P13       50000                                                                                                     
+L1051 웹서버관리                2 P11                                                                                                                 
+L2031 게임이론                  3           50000                                                                                                     
+L2061 스프링프레임워크          3           50000                                                                                                     
+L1061 ERP실무                   3 P12       50000                                                                                                     
+L4012 세무행정학                3 P51       50000                                                                                                     
+L2033 게임프로그래밍            3 P24       40000                                                                                                     
+L1043 JSP프로그래밍             3           50000                                                                                                     
+L4011 경영정보시스템            3 P41       30000                                                                                                     
+L1062 그룹웨어구축              3 P13       40000                                                                                                     
+
+19 개의 행이 선택되었습니다.
+
+SQL> @ ex08-39.sql
+SQL> SELECT Dept_ID, Year, student_ID, name, address
+  2  FROM   student
+  3  WHERE  REGEXP_LIKE (Address, '송파구|수성구')
+  4  /
+
+DEPT_ID  Y STUDENT_ID NAME     ADDRESS                                                                                                                
+-------- - ---------- -------- --------------------                                                                                                   
+컴공     2 C1701      이정민   대구시 수성구                                                                                                          
+컴공     1 C1801      김대현   서울시 송파구                                                                                                          
+
+SQL> @ ex09-18.sql
+SQL> SELECT Course_ID, Student_ID, SCORE,
+  2  	    RANK()	 OVER (ORDER BY SCORE DESC) "석차",
+  3  	    DENSE_RANK() OVER (ORDER BY SCORE DESC) "순위",
+  4  	    ROW_NUMBER() OVER (ORDER BY SCORE DESC) "순서"
+  5  FROM   SG_SCORES
+  6  WHERE  Student_ID = 'C1701'
+  7  /
+
+COURS STUDENT_ID      SCORE       석차       순위       순서                                                                                          
+----- ---------- ---------- ---------- ---------- ----------                                                                                          
+L1022 C1701              97          1          1          1                                                                                          
+L1011 C1701              97          1          1          2                                                                                          
+L1021 C1701              96          3          2          3                                                                                          
+L1031 C1701              96          3          2          4                                                                                          
+L1032 C1701              93          5          3          5                                                                                          
+L1051 C1701              89          6          4          6                                                                                          
+L2061 C1701              87          7          5          7                                                                                          
+L1042 C1701              83          8          6          8                                                                                          
+
+8 개의 행이 선택되었습니다.
+
+SQL> @ ex10-12.sql
+SQL> SELECT SG.STUDENT_ID, YEAR, NAME, SG.COURSE_ID, TITLE,
+  2  	    C_NUMBER, SCORE, GRADE
+  3  FROM   SG_SCORES SG INNER JOIN STUDENT S
+  4  			    ON (SG.STUDENT_ID = S.STUDENT_ID)
+  5  			 INNER JOIN COURSE C
+  6  			     ON (SG.COURSE_ID = C.COURSE_ID)
+  7  WHERE  SG.STUDENT_ID = 'C1701'
+  8  /
+
+STUDENT_ID Y NAME     COURS TITLE              C_NUMBER      SCORE GR                                                                                 
+---------- - -------- ----- ---------------- ---------- ---------- --                                                                                 
+C1701      2 이정민   L1011 컴퓨터구조                2         97 A+                                                                                 
+C1701      2 이정민   L1021 데이터베이스              2         96 A+                                                                                 
+C1701      2 이정민   L1022 정보통신개론              2         97 A+                                                                                 
+C1701      2 이정민   L1031 SQL응용                   3         96 A+                                                                                 
+C1701      2 이정민   L1032 JAVA                      3         93 A+                                                                                 
+C1701      2 이정민   L1042 델파이                    3         83 A+                                                                                 
+C1701      2 이정민   L1051 웹서버관리                2         89 A+                                                                                 
+C1701      2 이정민   L2061 스프링프레임워크          3         87 A+                                                                                 
+
+8 개의 행이 선택되었습니다.
+
+SQL> @ ex11-13.sql
+SQL> SELECT *
+  2  FROM   (SELECT ROWNUM num,a.*
+  3  	     FROM (SELECT Student_ID, Name, Title, C_Number, Score
+  4  		 FROM SG_Scores INNER JOIN Course USING (Course_ID)
+  5  			     INNER JOIN Student USING (Student_ID)
+  6  		  WHERE  Score IS NOT NULL
+  7  		  ORDER BY 5 DESC, 4 DESC) a
+  8  	      )
+  9  WHERE  num BETWEEN 11 AND 15
+ 10  /
+
+       NUM STUDENT_ID NAME     TITLE              C_NUMBER      SCORE                                                                                 
+---------- ---------- -------- ---------------- ---------- ----------                                                                                 
+        11 C1701      이정민   데이터베이스              2         96                                                                                 
+        12 C1702      박주영   스프링프레임워크          3         95                                                                                 
+        13 C1602      서희경   SQL응용                   3         94                                                                                 
+        14 C1701      이정민   JAVA                      3         93                                                                                 
+        15 C1602      서희경   스프링프레임워크          3         93                                                                                 
+
+SQL> @ ex12-10.sql
+SQL> SELECT *
+  2  FROM  SCORE_LIST
+  3  WHERE STUDENT_ID = 'C1701'
+  4  /
+
+STUDENT_ID COURS TITLE                 SCORE GR                                                                                                       
+---------- ----- ---------------- ---------- --                                                                                                       
+C1701      L1011 컴퓨터구조               97 A+                                                                                                       
+C1701      L1021 데이터베이스             96 A+                                                                                                       
+C1701      L1022 정보통신개론             97 A+                                                                                                       
+C1701      L1031 SQL응용                  96 A+                                                                                                       
+C1701      L1032 JAVA                     93 A+                                                                                                       
+C1701      L1042 델파이                   83 A+                                                                                                       
+C1701      L1051 웹서버관리               89 A+                                                                                                       
+C1701      L2061 스프링프레임워크         87 A+                                                                                                       
+
+8 개의 행이 선택되었습니다.
+
+SQL> @ ex13-01.sql
+SQL> SELECT OBJECT_NAME, OBJECT_TYPE
+  2  FROM   USER_OBJECTS
+  3  WHERE  OBJECT_TYPE = 'INDEX'
+  4  ORDER  BY 1
+  5  /
+
+OBJECT_NAME                    OBJECT_TYPE                                                                                                            
+------------------------------ ---------------                                                                                                        
+COURSE_PK                      INDEX                                                                                                                  
+DEPARTMENT_PK                  INDEX                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$X       INDEX                                                                                                                  
+DR$STUDENT_ADDRESS_INX$X       INDEX                                                                                                                  
+EC_BASKET_PK                   INDEX                                                                                                                  
+EC_MEMBER_NAME_INX             INDEX                                                                                                                  
+EC_MEMBER_PK                   INDEX                                                                                                                  
+EC_MEMBER_UK                   INDEX                                                                                                                  
+EC_ORDER_PK                    INDEX                                                                                                                  
+EC_PRODUCT_COMPANY_INX         INDEX                                                                                                                  
+EC_PRODUCT_INFO_INX            INDEX                                                                                                                  
+EC_PRODUCT_PK                  INDEX                                                                                                                  
+PROFESSOR_PK                   INDEX                                                                                                                  
+PROFESSOR_UK                   INDEX                                                                                                                  
+SG_SCORES_PK                   INDEX                                                                                                                  
+STUDENT_ADDRESS_INX            INDEX                                                                                                                  
+STUDENT_BIRTH_INX              INDEX                                                                                                                  
+STUDENT_NAME_INX               INDEX                                                                                                                  
+STUDENT_PK                     INDEX                                                                                                                  
+STUDENT_TELEPHONE_INX          INDEX                                                                                                                  
+STUDENT_UK                     INDEX                                                                                                                  
+SYS_IOT_TOP_286337             INDEX                                                                                                                  
+
+OBJECT_NAME                    OBJECT_TYPE                                                                                                            
+------------------------------ ---------------                                                                                                        
+SYS_IOT_TOP_286342             INDEX                                                                                                                  
+SYS_IOT_TOP_286421             INDEX                                                                                                                  
+SYS_IOT_TOP_286426             INDEX                                                                                                                  
+
+25 개의 행이 선택되었습니다.
+
+SQL> SET ECHO OFF
+SQL> spool off
+-rw-r--r-- 1 y1505098 student 378  4월  2 16:54 app05-1-1.sql
+-rw-r--r-- 1 y1505098 student 376  4월  2 16:54 app05-1-2.sql
+-rw-r--r-- 1 y1505098 student 399  4월  2 16:54 app05-1-3.sql
+-rw-r--r-- 1 y1505098 student 297  4월  2 16:54 app05-1-4.sql
+-rw-r--r-- 1 y1505098 student  31  4월  2 16:54 app05-2.sql
+-rw-r--r-- 1 y1505098 student  52  4월  2 16:54 app05-4.sql
+-rw-r--r-- 1 y1505098 student  56  4월  2 16:54 app05-5.sql
+-rw-r--r-- 1 y1505098 student  54  4월  2 16:54 app05-6.sql
+-rw-r--r-- 1 y1505098 student 130  4월  2 16:54 app05-7.sql
+-rw-r--r-- 1 y1505098 student 118  4월  2 16:54 app05-8.sql
+-rw-r--r-- 1 y1505098 student 111  4월  2 16:54 app05-9.sql
+-rw-r--r-- 1 y1505098 student  97  4월  9 17:03 app06-01.sql
+-rw-r--r-- 1 y1505098 student  97  4월  9 17:03 app06-02.sql
+-rw-r--r-- 1 y1505098 student  63  4월  9 17:03 app06-03.sql
+-rw-r--r-- 1 y1505098 student 132  4월  9 17:03 app06-04.sql
+-rw-r--r-- 1 y1505098 student  79  4월  9 17:03 app06-05.sql
+-rw-r--r-- 1 y1505098 student 131  4월  9 17:03 app06-06.sql
+-rw-r--r-- 1 y1505098 student 151  4월  9 17:03 app06-07.sql
+-rw-r--r-- 1 y1505098 student  94  4월  9 17:03 app06-08.sql
+-rw-r--r-- 1 y1505098 student 111  4월  9 17:03 app06-09.sql
+-rw-r--r-- 1 y1505098 student 111  4월  9 17:03 app06-10.sql
+-rw-r--r-- 1 y1505098 student 174  4월 16 17:14 app07-01-01.sql
+-rw-r--r-- 1 y1505098 student 180  4월 16 17:14 app07-01-02.sql
+-rw-r--r-- 1 y1505098 student 174  4월 16 17:14 app07-01-03.sql
+-rw-r--r-- 1 y1505098 student 137  4월 16 17:14 app07-01-04.sql
+-rw-r--r-- 1 y1505098 student  91  4월 16 17:14 app07-02-01.sql
+-rw-r--r-- 1 y1505098 student  91  4월 16 17:14 app07-02-02.sql
+-rw-r--r-- 1 y1505098 student 110  4월 16 17:14 app07-02-03.sql
+-rw-r--r-- 1 y1505098 student 115  4월 16 17:14 app07-03-01.sql
+-rw-r--r-- 1 y1505098 student 115  4월 16 17:14 app07-03-02.sql
+-rw-r--r-- 1 y1505098 student 115  4월 16 17:14 app07-03-03.sql
+-rw-r--r-- 1 y1505098 student 123  4월 16 17:14 app07-04.sql
+-rw-r--r-- 1 y1505098 student  65  4월 16 17:27 app07-05.sql
+-rw-r--r-- 1 y1505098 student  11  4월 16 17:14 app07-06.sql
+-rw-r--r-- 1 y1505098 student 160  5월  7 17:14 app08-01.sql
+-rw-r--r-- 1 y1505098 student 457  5월  7 17:14 app08-02.sql
+-rw-r--r-- 1 y1505098 student 259  5월  7 17:14 app08-03.sql
+-rw-r--r-- 1 y1505098 student 183  5월  7 17:14 app08-04.sql
+-rw-r--r-- 1 y1505098 student 300  5월  7 17:14 app08-05.sql
+-rw-r--r-- 1 y1505098 student  38  5월 14 17:12 app09-01.sql
+-rw-r--r-- 1 y1505098 student  53  5월 14 17:12 app09-02.sql
+-rw-r--r-- 1 y1505098 student 108  5월 14 17:12 app09-03.sql
+-rw-r--r-- 1 y1505098 student 141  5월 14 17:12 app09-04.sql
+-rw-r--r-- 1 y1505098 student 116  5월 14 17:12 app09-05.sql
+-rw-r--r-- 1 y1505098 student 218  5월 14 17:12 app09-06.sql
+-rw-r--r-- 1 y1505098 student 508  5월 14 17:12 app09-07.sql
+-rw-r--r-- 1 y1505098 student 194  5월 21 17:26 app10-01-1.sql
+-rw-r--r-- 1 y1505098 student 206  5월 21 17:26 app10-01-2.sql
+-rw-r--r-- 1 y1505098 student 236  5월 21 17:26 app10-02-1.sql
+-rw-r--r-- 1 y1505098 student 263  5월 21 17:26 app10-02-2.sql
+-rw-r--r-- 1 y1505098 student 227  5월 21 17:26 app10-03-1.sql
+-rw-r--r-- 1 y1505098 student 206  5월 21 17:26 app10-03-2.sql
+-rw-r--r-- 1 y1505098 student 186  5월 21 17:26 app10-04.sql
+-rw-r--r-- 1 y1505098 student 144  5월 21 17:26 app10-05.sql
+-rw-r--r-- 1 y1505098 student 154  5월 28 17:40 app11-01.sql
+-rw-r--r-- 1 y1505098 student 141  5월 28 17:40 app11-02.sql
+-rw-r--r-- 1 y1505098 student 210  5월 28 17:40 app11-03.sql
+-rw-r--r-- 1 y1505098 student 156  5월 28 17:40 app11-04.sql
+-rw-r--r-- 1 y1505098 student 160  5월 28 17:40 app11-05.sql
+-rw-r--r-- 1 y1505098 student  27  5월 28 17:40 app11-06-01.sql
+-rw-r--r-- 1 y1505098 student 161  5월 28 17:40 app11-06-02.sql
+-rw-r--r-- 1 y1505098 student  27  5월 28 17:40 app11-06-03.sql
+-rw-r--r-- 1 y1505098 student  26  5월 28 17:40 app11-06-04.sql
+-rw-r--r-- 1 y1505098 student  11  5월 28 17:40 app11-06-05.sql
+-rw-r--r-- 1 y1505098 student 192  5월 28 17:40 app11-07-01.sql
+-rw-r--r-- 1 y1505098 student  25  5월 28 17:40 app11-07-02.sql
+-rw-r--r-- 1 y1505098 student  11  5월 28 17:40 app11-07-03.sql
+-rw-r--r-- 1 y1505098 student 184  5월 28 17:40 app11-08.sql
+-rw-r--r-- 1 y1505098 student 209  5월 28 17:40 app11-09.sql
+-rw-r--r-- 1 y1505098 student  75  5월 28 17:40 app11-10-1.sql
+-rw-r--r-- 1 y1505098 student  75  5월 28 17:40 app11-10-2.sql
+-rw-r--r-- 1 y1505098 student  83  6월 15 13:29 app12-01.sql
+-rw-r--r-- 1 y1505098 student  39  6월 15 13:29 app12-02.sql
+-rw-r--r-- 1 y1505098 student 205  6월 15 13:29 app12-03-01.sql
+-rw-r--r-- 1 y1505098 student  28  6월 15 13:29 app12-03-02.sql
+-rw-r--r-- 1 y1505098 student  11  6월 15 13:29 app12-03-03.sql
+-rw-r--r-- 1 y1505098 student  49  6월 15 13:29 app12-04.sql
+-rw-r--r-- 1 y1505098 student 111  6월 15 13:29 app12-05-01.sql
+-rw-r--r-- 1 y1505098 student  70  6월 15 13:29 app12-05-02.sql
+-rw-r--r-- 1 y1505098 student 102  6월 15 13:29 app12-06.sql
+-rw-r--r-- 1 y1505098 student  28  6월 15 13:29 app12-07.sql
+-rw-r--r-- 1 y1505098 student  27  6월 15 13:29 app12-08.sql
+-rw-r--r-- 1 y1505098 student 100  6월 15 15:05 app13-01.sql
+-rw-r--r-- 1 y1505098 student  61  6월 15 15:05 app13-02.sql
+-rw-r--r-- 1 y1505098 student  88  6월 15 15:05 app13-03.sql
+-rw-r--r-- 1 y1505098 student  75  6월 15 15:05 app13-04-01.sql
+-rw-r--r-- 1 y1505098 student 121  6월 15 15:05 app13-04-02.sql
+-rw-r--r-- 1 y1505098 student  87  6월 15 15:05 app13-05.sql
+-rw-r--r-- 1 y1505098 student 141  6월 15 15:05 app13-06.sql
+-rw-r--r-- 1 y1505098 student  98  6월 15 15:05 app13-07.sql
+-rw-r--r-- 1 y1505098 student 100  6월 15 15:05 app13-08.sql
+-rw-r--r-- 1 y1505098 student 136  6월 15 15:05 app13-09.sql
+-rw-r--r-- 1 y1505098 student  43  6월 15 15:05 app13-10.sql
+-rw-r--r-- 1 y1505098 student 146  3월 26 16:52 ex05-01.sql
+-rw-r--r-- 1 y1505098 student  22  3월 26 16:52 ex05-03.sql
+-rw-r--r-- 1 y1505098 student 146  3월 26 16:52 ex05-04.sql
+-rw-r--r-- 1 y1505098 student  26  3월 26 16:52 ex05-05-01.sql
+-rw-r--r-- 1 y1505098 student 162  3월 26 16:52 ex05-05-02.sql
+-rw-r--r-- 1 y1505098 student  26  3월 26 16:52 ex05-05-03.sql
+-rw-r--r-- 1 y1505098 student 127  3월 26 16:52 ex05-05-04.sql
+-rw-r--r-- 1 y1505098 student 230  3월 26 16:52 ex05-06.sql
+-rw-r--r-- 1 y1505098 student 371  3월 26 16:52 ex05-07-01.sql
+-rw-r--r-- 1 y1505098 student  23  3월 26 16:52 ex05-07-02.sql
+-rw-r--r-- 1 y1505098 student 316  3월 26 16:52 ex05-07-03.sql
+-rw-r--r-- 1 y1505098 student 295  3월 26 16:52 ex05-08-.sql
+-rw-r--r-- 1 y1505098 student  58  3월 26 16:52 ex05-09-01.sql
+-rw-r--r-- 1 y1505098 student 251  3월 26 16:52 ex05-09-02.sql
+-rw-r--r-- 1 y1505098 student  25  3월 26 16:52 ex05-10-01.sql
+-rw-r--r-- 1 y1505098 student 342  3월 26 16:52 ex05-10-02.sql
+-rw-r--r-- 1 y1505098 student  25  3월 26 16:52 ex05-11-01.sql
+-rw-r--r-- 1 y1505098 student 325  3월 26 16:52 ex05-11-02.sql
+-rw-r--r-- 1 y1505098 student  25  3월 26 16:52 ex05-12-01.sql
+-rw-r--r-- 1 y1505098 student 412  3월 26 16:52 ex05-12-02.sql
+-rw-r--r-- 1 y1505098 student 182  3월 26 16:52 ex05-13-01.sql
+-rw-r--r-- 1 y1505098 student  88  3월 26 16:52 ex05-13-02.sql
+-rw-r--r-- 1 y1505098 student  25  3월 26 16:52 ex05-13-03.sql
+-rw-r--r-- 1 y1505098 student 116  4월  2 16:53 ex05-14.sql
+-rw-r--r-- 1 y1505098 student  64  4월  2 16:53 ex05-15.sql
+-rw-r--r-- 1 y1505098 student  62  4월  2 16:53 ex05-16.sql
+-rw-r--r-- 1 y1505098 student  73  4월  2 16:53 ex05-17.sql
+-rw-r--r-- 1 y1505098 student  73  4월  2 16:53 ex05-18.sql
+-rw-r--r-- 1 y1505098 student  44  4월  2 16:53 ex05-19.sql
+-rw-r--r-- 1 y1505098 student  46  4월  2 16:53 ex05-20.sql
+-rw-r--r-- 1 y1505098 student  54  4월  2 16:53 ex05-21.sql
+-rw-r--r-- 1 y1505098 student  57  4월  2 16:53 ex05-22.sql
+-rw-r--r-- 1 y1505098 student  67  4월  2 16:53 ex05-23-01.sql
+-rw-r--r-- 1 y1505098 student  58  4월  2 16:53 ex05-23-02.sql
+-rw-r--r-- 1 y1505098 student 106  4월  2 16:53 ex05-23-03.sql
+-rw-r--r-- 1 y1505098 student  67  4월  2 16:53 ex05-24-01.sql
+-rw-r--r-- 1 y1505098 student  29  4월  2 16:53 ex05-24-02.sql
+-rw-r--r-- 1 y1505098 student 130  4월  2 16:53 ex05-24-03.sql
+-rw-r--r-- 1 y1505098 student  57  4월  2 16:53 ex05-25.sql
+-rw-r--r-- 1 y1505098 student  57  4월  2 16:53 ex05-26.sql
+-rw-r--r-- 1 y1505098 student  46  4월  2 16:53 ex05-27.sql
+-rw-r--r-- 1 y1505098 student  61  4월  2 16:53 ex05-28.sql
+-rw-r--r-- 1 y1505098 student  23  4월  2 16:53 ex05-29.sql
+-rw-r--r-- 1 y1505098 student 128  4월  2 16:53 ex05-30-1.sql
+-rw-r--r-- 1 y1505098 student  26  4월  2 16:53 ex05-30-2.sql
+-rw-r--r-- 1 y1505098 student  43  4월  2 16:53 ex05-32.sql
+-rw-r--r-- 1 y1505098 student  21  4월  2 16:53 ex05-33-1.sql
+-rw-r--r-- 1 y1505098 student  22  4월  2 16:53 ex05-33-2.sql
+-rw-r--r-- 1 y1505098 student  30  4월  2 16:53 ex05-34.sql
+-rw-r--r-- 1 y1505098 student  31  4월  2 16:53 ex05-35.sql
+-rw-r--r-- 1 y1505098 student  31  4월  2 16:53 ex05-36-1.sql
+-rw-r--r-- 1 y1505098 student 290  4월  2 16:53 ex05-36-2.sql
+-rw-r--r-- 1 y1505098 student 120  4월  2 16:53 ex05-36-3.sql
+-rw-r--r-- 1 y1505098 student 109  4월  2 16:53 ex05-37.sql
+-rw-r--r-- 1 y1505098 student  59  4월  9 16:52 ex06-01.sql
+-rw-r--r-- 1 y1505098 student  46  4월  9 16:52 ex06-02.sql
+-rw-r--r-- 1 y1505098 student  56  4월  9 16:52 ex06-03.sql
+-rw-r--r-- 1 y1505098 student  81  4월  9 16:52 ex06-04.sql
+-rw-r--r-- 1 y1505098 student 100  4월  9 16:52 ex06-05.sql
+-rw-r--r-- 1 y1505098 student 169  4월  9 16:52 ex06-06.sql
+-rw-r--r-- 1 y1505098 student  92  4월  9 16:52 ex06-07.sql
+-rw-r--r-- 1 y1505098 student 113  4월  9 16:52 ex06-08.sql
+-rw-r--r-- 1 y1505098 student  84  4월  9 16:52 ex06-09.sql
+-rw-r--r-- 1 y1505098 student  88  4월  9 16:52 ex06-10.sql
+-rw-r--r-- 1 y1505098 student 146  4월  9 16:52 ex06-11.sql
+-rw-r--r-- 1 y1505098 student  82  4월  9 16:52 ex06-12.sql
+-rw-r--r-- 1 y1505098 student  83  4월  9 16:52 ex06-13.sql
+-rw-r--r-- 1 y1505098 student 113  4월  9 16:52 ex06-14.sql
+-rw-r--r-- 1 y1505098 student 120  4월  9 16:52 ex06-15.sql
+-rw-r--r-- 1 y1505098 student 125  4월  9 16:52 ex06-16.sql
+-rw-r--r-- 1 y1505098 student 108  4월  9 16:52 ex06-17.sql
+-rw-r--r-- 1 y1505098 student 113  4월  9 16:52 ex06-18.sql
+-rw-r--r-- 1 y1505098 student  73  4월  9 16:52 ex06-19.sql
+-rw-r--r-- 1 y1505098 student  77  4월  9 16:52 ex06-20.sql
+-rw-r--r-- 1 y1505098 student  67  4월  9 16:52 ex06-21.sql
+-rw-r--r-- 1 y1505098 student  87  4월  9 16:52 ex06-22.sql
+-rw-r--r-- 1 y1505098 student 128  4월 16 17:14 ex07-01-01.sql
+-rw-r--r-- 1 y1505098 student  58  4월 16 17:14 ex07-01-02.sql
+-rw-r--r-- 1 y1505098 student  77  4월 16 17:14 ex07-02.sql
+-rw-r--r-- 1 y1505098 student 118  4월 16 17:14 ex07-03-01.sql
+-rw-r--r-- 1 y1505098 student  84  4월 16 17:14 ex07-03-02.sql
+-rw-r--r-- 1 y1505098 student 124  4월 16 17:14 ex07-04.sql
+-rw-r--r-- 1 y1505098 student 116  4월 16 17:14 ex07-05.sql
+-rw-r--r-- 1 y1505098 student 122  4월 16 17:14 ex07-06-01.sql
+-rw-r--r-- 1 y1505098 student  56  4월 16 17:14 ex07-06-02.sql
+-rw-r--r-- 1 y1505098 student 126  4월 16 17:14 ex07-07-.sql
+-rw-r--r-- 1 y1505098 student 157  4월 16 17:14 ex07-08-01.sql
+-rw-r--r-- 1 y1505098 student  29  4월 16 17:14 ex07-08-02.sql
+-rw-r--r-- 1 y1505098 student 155  4월 16 17:14 ex07-08-03.sql
+-rw-r--r-- 1 y1505098 student 150  4월 16 17:14 ex07-09-01.sql
+-rw-r--r-- 1 y1505098 student  98  4월 16 17:14 ex07-09-02.sql
+-rw-r--r-- 1 y1505098 student 118  4월 16 17:14 ex07-09-03.sql
+-rw-r--r-- 1 y1505098 student 150  4월 16 17:14 ex07-10.sql
+-rw-r--r-- 1 y1505098 student 138  4월 16 17:14 ex07-11.sql
+-rw-r--r-- 1 y1505098 student 138  4월 16 17:14 ex07-12.sql
+-rw-r--r-- 1 y1505098 student 115  4월 16 17:14 ex07-13-01.sql
+-rw-r--r-- 1 y1505098 student  84  4월 16 17:14 ex07-13-02.sql
+-rw-r--r-- 1 y1505098 student  11  4월 16 17:14 ex07-13-03.sql
+-rw-r--r-- 1 y1505098 student  29  4월 16 17:14 ex07-14-01.sql
+-rw-r--r-- 1 y1505098 student  59  4월 16 17:14 ex07-14-02.sql
+-rw-r--r-- 1 y1505098 student  29  4월 16 17:14 ex07-14-03.sql
+-rw-r--r-- 1 y1505098 student  13  4월 16 17:14 ex07-14-04.sql
+-rw-r--r-- 1 y1505098 student  53  4월 16 17:14 ex07-15-01.sql
+-rw-r--r-- 1 y1505098 student  71  4월 16 17:14 ex07-15-02.sql
+-rw-r--r-- 1 y1505098 student  56  4월 16 17:14 ex07-15-03.sql
+-rw-r--r-- 1 y1505098 student 111  4월 16 17:14 ex07-16-01.sql
+-rw-r--r-- 1 y1505098 student  91  4월 16 17:14 ex07-16-02.sql
+-rw-r--r-- 1 y1505098 student 111  4월 16 17:14 ex07-16-03.sql
+-rw-r--r-- 1 y1505098 student 113  4월 16 17:14 ex07-17-01.sql
+-rw-r--r-- 1 y1505098 student 124  4월 16 17:14 ex07-17-02.sql
+-rw-r--r-- 1 y1505098 student 124  4월 16 17:14 ex07-17-03.sql
+-rw-r--r-- 1 y1505098 student 124  4월 16 17:14 ex07-17-04.sql
+-rw-r--r-- 1 y1505098 student 124  4월 16 17:14 ex07-17-05.sql
+-rw-r--r-- 1 y1505098 student  11  4월 16 17:14 ex07-17-06.sql
+-rw-r--r-- 1 y1505098 student 123  4월 16 17:14 ex07-17-07.sql
+-rw-r--r-- 1 y1505098 student  25  4월 16 17:14 ex07-18-01.sql
+-rw-r--r-- 1 y1505098 student  27  4월 16 17:14 ex07-18-02.sql
+-rw-r--r-- 1 y1505098 student  13  4월 16 17:14 ex07-18-03.sql
+-rw-r--r-- 1 y1505098 student  49  4월 16 17:14 ex07-19-01.sql
+-rw-r--r-- 1 y1505098 student  53  4월 16 17:14 ex07-19-02.sql
+-rw-r--r-- 1 y1505098 student 141  4월 16 17:14 ex07-20-01.sql
+-rw-r--r-- 1 y1505098 student  34  4월 16 17:14 ex07-20-02.sql
+-rw-r--r-- 1 y1505098 student  36  4월 16 17:14 ex07-20-03.sql
+-rw-r--r-- 1 y1505098 student  92  4월 16 17:14 ex07-21-01.sql
+-rw-r--r-- 1 y1505098 student  51  4월 16 17:14 ex07-21-02.sql
+-rw-r--r-- 1 y1505098 student  51  4월 16 17:14 ex07-22-01.sql
+-rw-r--r-- 1 y1505098 student 161  4월 16 17:14 ex07-22-02.sql
+-rw-r--r-- 1 y1505098 student  55  4월 16 17:14 ex07-23-01.sql
+-rw-r--r-- 1 y1505098 student  55  4월 16 17:14 ex07-23-02.sql
+-rw-r--r-- 1 y1505098 student  54  4월 16 17:14 ex07-23-03.sql
+-rw-r--r-- 1 y1505098 student  49  4월 16 17:14 ex07-24-01.sql
+-rw-r--r-- 1 y1505098 student 160  4월 16 17:14 ex07-24-02.sql
+-rw-r--r-- 1 y1505098 student  57  4월 16 17:14 ex07-25-01.sql
+-rw-r--r-- 1 y1505098 student  55  4월 16 17:14 ex07-25-02.sql
+-rw-r--r-- 1 y1505098 student  57  4월 16 17:14 ex07-25-03.sql
+-rw-r--r-- 1 y1505098 student  27  4월 16 17:14 ex07-26-01.sql
+-rw-r--r-- 1 y1505098 student  25  4월 16 17:14 ex07-26-02.sql
+-rw-r--r-- 1 y1505098 student 375  4월 16 17:14 ex07-26-03.sql
+-rw-r--r-- 1 y1505098 student  25  4월 16 17:14 ex07-26-04.sql
+-rw-r--r-- 1 y1505098 student 136  4월 16 17:14 ex07-27-01.sql
+-rw-r--r-- 1 y1505098 student  11  4월 16 17:14 ex07-27-02.sql
+-rw-r--r-- 1 y1505098 student  33  4월 16 17:14 ex07-28-01.sql
+-rw-r--r-- 1 y1505098 student  13  4월 16 17:14 ex07-28-02.sql
+-rw-r--r-- 1 y1505098 student  35  4월 16 17:14 ex07-28-03.sql
+-rw-r--r-- 1 y1505098 student  53  4월 30 17:18 ex08-01.sql
+-rw-r--r-- 1 y1505098 student  81  4월 30 17:18 ex08-02.sql
+-rw-r--r-- 1 y1505098 student  90  4월 30 17:18 ex08-03.sql
+-rw-r--r-- 1 y1505098 student  45  4월 30 17:18 ex08-04.sql
+-rw-r--r-- 1 y1505098 student  53  4월 30 17:18 ex08-05.sql
+-rw-r--r-- 1 y1505098 student 116  4월 30 17:18 ex08-06.sql
+-rw-r--r-- 1 y1505098 student  92  4월 30 17:18 ex08-07.sql
+-rw-r--r-- 1 y1505098 student  70  4월 30 17:18 ex08-08-01.sql
+-rw-r--r-- 1 y1505098 student  66  4월 30 17:18 ex08-08-02.sql
+-rw-r--r-- 1 y1505098 student  55  4월 30 17:18 ex08-09.sql
+-rw-r--r-- 1 y1505098 student  48  4월 30 17:18 ex08-10.sql
+-rw-r--r-- 1 y1505098 student  61  4월 30 17:18 ex08-11.sql
+-rw-r--r-- 1 y1505098 student  61  4월 30 17:18 ex08-12.sql
+-rw-r--r-- 1 y1505098 student  71  4월 30 17:18 ex08-13.sql
+-rw-r--r-- 1 y1505098 student  64  4월 30 17:18 ex08-14-1.sql
+-rw-r--r-- 1 y1505098 student  48  4월 30 17:18 ex08-14-2.sql
+-rw-r--r-- 1 y1505098 student  53  4월 30 17:18 ex08-15-1.sql
+-rw-r--r-- 1 y1505098 student 254  4월 30 17:18 ex08-15-2.sql
+-rw-r--r-- 1 y1505098 student  92  4월 30 17:18 ex08-16.sql
+-rw-r--r-- 1 y1505098 student  65  4월 30 17:18 ex08-17.sql
+-rw-r--r-- 1 y1505098 student 173  4월 30 17:18 ex08-18.sql
+-rw-r--r-- 1 y1505098 student 116  4월 30 17:18 ex08-19.sql
+-rw-r--r-- 1 y1505098 student 175  4월 30 17:18 ex08-20.sql
+-rw-r--r-- 1 y1505098 student  53  4월 30 17:18 ex08-21-1.sql
+-rw-r--r-- 1 y1505098 student 183  4월 30 17:18 ex08-21-2.sql
+-rw-r--r-- 1 y1505098 student 165  4월 30 17:18 ex08-22.sql
+-rw-r--r-- 1 y1505098 student 161  4월 30 17:18 ex08-23.sql
+-rw-r--r-- 1 y1505098 student  78  4월 30 17:18 ex08-24.sql
+-rw-r--r-- 1 y1505098 student 121  4월 30 17:18 ex08-25.sql
+-rw-r--r-- 1 y1505098 student 157  4월 30 17:18 ex08-26.sql
+-rw-r--r-- 1 y1505098 student 112  4월 30 17:18 ex08-27.sql
+-rw-r--r-- 1 y1505098 student 184  4월 30 17:18 ex08-28.sql
+-rw-r--r-- 1 y1505098 student 166  4월 30 17:18 ex08-29.sql
+-rw-r--r-- 1 y1505098 student  99  4월 30 17:18 ex08-30.sql
+-rw-r--r-- 1 y1505098 student  63  4월 30 17:18 ex08-31.sql
+-rw-r--r-- 1 y1505098 student  63  4월 30 17:18 ex08-32.sql
+-rw-r--r-- 1 y1505098 student 124  4월 30 17:18 ex08-33.sql
+-rw-r--r-- 1 y1505098 student 135  4월 30 17:18 ex08-34.sql
+-rw-r--r-- 1 y1505098 student 125  4월 30 17:18 ex08-35.sql
+-rw-r--r-- 1 y1505098 student 214  5월  7 17:14 ex08-36.sql
+-rw-r--r-- 1 y1505098 student 302  5월  7 17:14 ex08-37.sql
+-rw-r--r-- 1 y1505098 student 196  5월  7 17:14 ex08-38.sql
+-rw-r--r-- 1 y1505098 student 115  5월  7 17:14 ex08-39.sql
+-rw-r--r-- 1 y1505098 student 533  5월  7 17:14 ex08-40.sql
+-rw-r--r-- 1 y1505098 student  94  5월  7 17:14 ex08-41-02.sql
+-rw-r--r-- 1 y1505098 student  11  5월  7 17:14 ex08-41-03.sql
+-rw-r--r-- 1 y1505098 student  53  5월  7 17:14 ex08-41-1.sql
+-rw-r--r-- 1 y1505098 student  49  5월  7 17:14 ex09-01.sql
+-rw-r--r-- 1 y1505098 student  80  5월  7 17:14 ex09-02.sql
+-rw-r--r-- 1 y1505098 student  80  5월  7 17:14 ex09-03.sql
+-rw-r--r-- 1 y1505098 student  81  5월  7 17:14 ex09-04.sql
+-rw-r--r-- 1 y1505098 student  88  5월  7 17:14 ex09-05.sql
+-rw-r--r-- 1 y1505098 student  67  5월  7 17:14 ex09-06.sql
+-rw-r--r-- 1 y1505098 student  82  5월  7 17:14 ex09-07.sql
+-rw-r--r-- 1 y1505098 student 163  5월  7 17:14 ex09-08.sql
+-rw-r--r-- 1 y1505098 student 105  5월  7 17:14 ex09-09.sql
+-rw-r--r-- 1 y1505098 student  97  5월  7 17:14 ex09-10.sql
+-rw-r--r-- 1 y1505098 student 101  5월  7 17:14 ex09-11.sql
+-rw-r--r-- 1 y1505098 student 107  5월  7 17:14 ex09-12.sql
+-rw-r--r-- 1 y1505098 student 110  5월  7 17:14 ex09-13.sql
+-rw-r--r-- 1 y1505098 student 419  5월  7 17:14 ex09-14.sql
+-rw-r--r-- 1 y1505098 student 126  5월  7 17:14 ex09-15.sql
+-rw-r--r-- 1 y1505098 student 180  5월  7 17:14 ex09-16.sql
+-rw-r--r-- 1 y1505098 student 173  5월  7 17:14 ex09-17.sql
+-rw-r--r-- 1 y1505098 student 255  5월  7 17:14 ex09-18.sql
+-rw-r--r-- 1 y1505098 student 183  5월  7 17:14 ex09-19.sql
+-rw-r--r-- 1 y1505098 student 118  5월 14 17:12 ex09-20.sql
+-rw-r--r-- 1 y1505098 student 224  5월 14 17:12 ex09-21.sql
+-rw-r--r-- 1 y1505098 student 191  5월 14 17:12 ex09-22.sql
+-rw-r--r-- 1 y1505098 student 142  5월 14 17:12 ex10-01.sql
+-rw-r--r-- 1 y1505098 student 102  5월 14 17:12 ex10-02.sql
+-rw-r--r-- 1 y1505098 student 113  5월 14 17:12 ex10-03.sql
+-rw-r--r-- 1 y1505098 student 144  5월 14 17:12 ex10-04.sql
+-rw-r--r-- 1 y1505098 student 251  5월 14 17:12 ex10-05.sql
+-rw-r--r-- 1 y1505098 student  30  5월 14 17:12 ex10-06-1.sql
+-rw-r--r-- 1 y1505098 student 179  5월 14 17:12 ex10-06-2.sql
+-rw-r--r-- 1 y1505098 student 113  5월 14 17:12 ex10-07.sql
+-rw-r--r-- 1 y1505098 student 195  5월 14 17:12 ex10-08.sql
+-rw-r--r-- 1 y1505098 student 123  5월 14 17:12 ex10-09.sql
+-rw-r--r-- 1 y1505098 student 219  5월 14 17:12 ex10-10.sql
+-rw-r--r-- 1 y1505098 student 150  5월 14 17:12 ex10-11.sql
+-rw-r--r-- 1 y1505098 student 301  5월 14 17:12 ex10-12.sql
+-rw-r--r-- 1 y1505098 student 146  5월 14 17:12 ex10-13.sql
+-rw-r--r-- 1 y1505098 student 146  5월 14 17:12 ex10-14.sql
+-rw-r--r-- 1 y1505098 student 169  5월 14 17:12 ex10-15.sql
+-rw-r--r-- 1 y1505098 student 118  5월 14 17:12 ex10-16.sql
+-rw-r--r-- 1 y1505098 student 121  5월 14 17:12 ex10-17.sql
+-rw-r--r-- 1 y1505098 student 116  5월 14 17:12 ex10-18.sql
+-rw-r--r-- 1 y1505098 student 135  5월 14 17:12 ex10-19.sql
+-rw-r--r-- 1 y1505098 student 178  5월 14 17:12 ex10-20.sql
+-rw-r--r-- 1 y1505098 student 136  5월 14 17:12 ex10-21.sql
+-rw-r--r-- 1 y1505098 student 137  5월 14 17:12 ex10-22.sql
+-rw-r--r-- 1 y1505098 student 174  5월 21 17:26 ex10-23.sql
+-rw-r--r-- 1 y1505098 student 277  5월 21 17:26 ex10-24.sql
+-rw-r--r-- 1 y1505098 student 275  5월 21 17:26 ex10-25.sql
+-rw-r--r-- 1 y1505098 student 251  5월 21 17:26 ex10-26.sql
+-rw-r--r-- 1 y1505098 student 249  5월 21 17:26 ex10-27.sql
+-rw-r--r-- 1 y1505098 student 146  5월 21 17:26 ex10-28.sql
+-rw-r--r-- 1 y1505098 student  71  5월 21 17:26 ex10-29.sql
+-rw-r--r-- 1 y1505098 student 156  5월 21 17:26 ex10-30.sql
+-rw-r--r-- 1 y1505098 student 131  5월 21 17:26 ex10-31.sql
+-rw-r--r-- 1 y1505098 student 170  5월 21 17:26 ex10-32.sql
+-rw-r--r-- 1 y1505098 student  84  5월 21 17:26 ex11-01-1.sql
+-rw-r--r-- 1 y1505098 student  66  5월 21 17:26 ex11-01-2.sql
+-rw-r--r-- 1 y1505098 student 110  5월 21 17:26 ex11-01-3.sql
+-rw-r--r-- 1 y1505098 student 201  5월 21 17:26 ex11-02.sql
+-rw-r--r-- 1 y1505098 student 229  5월 21 17:26 ex11-03.sql
+-rw-r--r-- 1 y1505098 student 282  5월 21 17:26 ex11-04.sql
+-rw-r--r-- 1 y1505098 student 232  5월 21 17:26 ex11-05.sql
+-rw-r--r-- 1 y1505098 student 226  5월 21 17:26 ex11-06.sql
+-rw-r--r-- 1 y1505098 student 169  5월 21 17:26 ex11-07.sql
+-rw-r--r-- 1 y1505098 student 193  5월 21 17:26 ex11-08.sql
+-rw-r--r-- 1 y1505098 student 255  5월 21 17:26 ex11-09.sql
+-rw-r--r-- 1 y1505098 student 366  5월 21 17:26 ex11-10.sql
+-rw-r--r-- 1 y1505098 student 270  5월 21 17:26 ex11-11.sql
+-rw-r--r-- 1 y1505098 student 220  5월 21 17:26 ex11-12-1.sql
+-rw-r--r-- 1 y1505098 student 309  5월 21 17:26 ex11-12-2.sql
+-rw-r--r-- 1 y1505098 student 356  5월 21 17:26 ex11-13.sql
+-rw-r--r-- 1 y1505098 student 195  5월 28 17:40 ex11-14.sql
+-rw-r--r-- 1 y1505098 student 183  5월 28 17:40 ex11-15-1.sql
+-rw-r--r-- 1 y1505098 student  35  5월 28 17:40 ex11-15-2.sql
+-rw-r--r-- 1 y1505098 student  79  5월 28 17:40 ex11-16.sql
+-rw-r--r-- 1 y1505098 student 142  5월 28 17:40 ex11-17-1.sql
+-rw-r--r-- 1 y1505098 student  69  5월 28 17:40 ex11-17-2.sql
+-rw-r--r-- 1 y1505098 student  87  5월 28 17:40 ex11-18.sql
+-rw-r--r-- 1 y1505098 student  29  5월 28 17:40 ex11-19.sql
+-rw-r--r-- 1 y1505098 student  97  5월 28 17:40 ex11-20.sql
+-rw-r--r-- 1 y1505098 student 212  5월 28 17:40 ex11-24-1.sql
+-rw-r--r-- 1 y1505098 student  11  5월 28 17:40 ex11-24-2.sql
+-rw-r--r-- 1 y1505098 student 147  5월 28 17:40 ex11-25-1.sql
+-rw-r--r-- 1 y1505098 student  88  5월 28 17:40 ex11-25-2.sql
+-rw-r--r-- 1 y1505098 student  13  5월 28 17:40 ex11-25-3.sql
+-rw-r--r-- 1 y1505098 student 160  5월 28 17:40 ex11-26-02.sql
+-rw-r--r-- 1 y1505098 student  95  5월 28 17:40 ex11-26-03.sql
+-rw-r--r-- 1 y1505098 student  54  5월 28 17:40 ex11-26.sql
+-rw-r--r-- 1 y1505098 student  35  5월 28 17:40 ex11-27-2.sql
+-rw-r--r-- 1 y1505098 student  11  5월 28 17:40 ex11-27-3.sql
+-rw-r--r-- 1 y1505098 student 137  5월 28 17:40 ex11-27.sql
+-rw-r--r-- 1 y1505098 student  63  5월 28 17:40 ex12-01.sql
+-rw-r--r-- 1 y1505098 student  76  5월 28 17:40 ex12-02.sql
+-rw-r--r-- 1 y1505098 student  99  5월 28 17:40 ex12-03.sql
+-rw-r--r-- 1 y1505098 student 178  5월 28 17:40 ex12-04-1.sql
+-rw-r--r-- 1 y1505098 student  65  5월 28 17:40 ex12-04-2.sql
+-rw-r--r-- 1 y1505098 student  44  5월 28 17:40 ex12-05.sql
+-rw-r--r-- 1 y1505098 student  66  5월 28 17:40 ex12-06.sql
+-rw-r--r-- 1 y1505098 student  25  5월 28 17:40 ex12-07.sql
+-rw-r--r-- 1 y1505098 student 147  5월 28 17:40 ex12-08.sql
+-rw-r--r-- 1 y1505098 student 143  5월 28 17:40 ex12-09.sql
+-rw-r--r-- 1 y1505098 student  59  5월 28 17:40 ex12-10.sql
+-rw-r--r-- 1 y1505098 student  47  5월 28 17:40 ex12-11-2.sql
+-rw-r--r-- 1 y1505098 student 190  5월 28 17:40 ex12-11.sql
+-rw-r--r-- 1 y1505098 student  63  5월 28 17:40 ex12-12-2.sql
+-rw-r--r-- 1 y1505098 student 148  5월 28 17:40 ex12-12.sql
+-rw-r--r-- 1 y1505098 student 108  5월 28 17:40 ex12-13-1.sql
+-rw-r--r-- 1 y1505098 student  72  5월 28 17:40 ex12-13-2.sql
+-rw-r--r-- 1 y1505098 student  82  5월 28 17:40 ex12-14-02.sql
+-rw-r--r-- 1 y1505098 student 124  5월 28 17:40 ex12-14.sql
+-rw-r--r-- 1 y1505098 student 162  5월 28 17:40 ex12-15.sql
+-rw-r--r-- 1 y1505098 student  88  5월 28 17:40 ex12-16.sql
+-rw-r--r-- 1 y1505098 student  36  5월 28 17:40 ex12-17.sql
+-rw-r--r-- 1 y1505098 student 100  6월 15 15:05 ex13-01.sql
+-rw-r--r-- 1 y1505098 student  97  6월 15 15:05 ex13-02.sql
+-rw-r--r-- 1 y1505098 student  88  6월 15 15:05 ex13-03.sql
+-rw-r--r-- 1 y1505098 student  74  6월 15 15:05 ex13-04.sql
+-rw-r--r-- 1 y1505098 student  57  6월 15 15:05 ex13-05.sql
+-rw-r--r-- 1 y1505098 student  83  6월 15 15:05 ex13-06.sql
+-rw-r--r-- 1 y1505098 student 146  6월 15 15:05 ex13-07.sql
+-rw-r--r-- 1 y1505098 student  74  6월 15 15:05 ex13-08-01.sql
+-rw-r--r-- 1 y1505098 student 123  6월 15 15:05 ex13-08-02.sql
+-rw-r--r-- 1 y1505098 student  98  6월 15 15:05 ex13-09.sql
+-rw-r--r-- 1 y1505098 student 113  6월 15 15:05 ex13-10.sql
+-rw-r--r-- 1 y1505098 student  54  6월 15 15:05 ex13-11.sql
+-rw-r--r-- 1 y1505098 student  44  6월 15 15:05 ex13-12.sql
+-rw-r--r-- 1 y1505098 student 132  6월 15 15:05 ex13-13.sql
+-rw-r--r-- 1 y1505098 student  86  6월 15 15:05 ex13-14.sql
+-rw-r--r-- 1 y1505098 student  44  6월 15 15:05 ex13-15.sql

@@ -1,0 +1,7 @@
+CREATE GLOBAL TEMPORARY TABLE T_Computer
+ON COMMIT PRESERVE ROWS
+  AS
+     SELECT *
+     FROM   Student
+     WHERE  Dept_ID = 'ÄÄ°ø'
+/

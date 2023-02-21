@@ -1,0 +1,4 @@
+UPDATE EC_MEMBER
+SET    BuyCash = 0
+WHERE  BuyCash IS NULL
+/

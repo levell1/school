@@ -1,0 +1,8 @@
+SELECT UNIQUE CURRENT_DATE "현재일자", I_DATE "입학일자",
+       EXTRACT(YEAR  FROM I_DATE) "입학년도",
+       EXTRACT(MONTH FROM I_DATE) "입학월",
+       EXTRACT(DAY   FROM I_DATE) "입학일"
+FROM   Student
+WHERE  I_DATE IS NOT NULL
+ORDER  BY 2
+/

@@ -1,0 +1,220 @@
+SQL> SET ECHO ON
+SQL> SET LIN 150
+SQL> @ex05-03.sql
+SQL> SELECT * FROM TAB
+  2  /
+
+TNAME                          TABTYPE  CLUSTERID                                                                                                     
+------------------------------ ------- ----------                                                                                                     
+COMPUTER_STUDENT               TABLE                                                                                                                  
+COURSE                         TABLE                                                                                                                  
+COURSE_NVL_VIEW                VIEW                                                                                                                   
+COURSE_TEMP                    TABLE                                                                                                                  
+DEPARTMENT                     TABLE                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$I       TABLE                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$K       TABLE                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$N       TABLE                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$R       TABLE                                                                                                                  
+DR$STUDENT_ADDRESS_INX$I       TABLE                                                                                                                  
+DR$STUDENT_ADDRESS_INX$K       TABLE                                                                                                                  
+DR$STUDENT_ADDRESS_INX$N       TABLE                                                                                                                  
+DR$STUDENT_ADDRESS_INX$R       TABLE                                                                                                                  
+EC_BASKET                      TABLE                                                                                                                  
+EC_MEMBER                      TABLE                                                                                                                  
+EC_ORDER                       TABLE                                                                                                                  
+EC_PRODUCT                     TABLE                                                                                                                  
+EMPTY_ORDER                    TABLE                                                                                                                  
+PROFESSOR                      TABLE                                                                                                                  
+PRO_COURSE_CNT                 VIEW                                                                                                                   
+SCORE_GRADE                    TABLE                                                                                                                  
+SCORE_LIST                     VIEW                                                                                                                   
+
+TNAME                          TABTYPE  CLUSTERID                                                                                                     
+------------------------------ ------- ----------                                                                                                     
+SG_SCORES                      TABLE                                                                                                                  
+STUDENT                        TABLE                                                                                                                  
+STUDENT_BUSINESS_VIEW          VIEW                                                                                                                   
+STUDENT_COMPUTER               TABLE                                                                                                                  
+T_COMPUTER                     TABLE                                                                                                                  
+T_COURSE                       TABLE                                                                                                                  
+T_SG_SCORES                    TABLE                                                                                                                  
+
+29 개의 행이 선택되었습니다.
+
+SQL> @ex06-12.sql
+SQL> SELECT Dept_ID, Year,Student_ID, Name
+  2  FROM   Student
+  3  WHERE  Name LIKE '이%'
+  4  /
+
+DEPT_ID  Y STUDENT_ID NAME                                                                                                                            
+-------- - ---------- --------                                                                                                                        
+행정     1 A1701      이미나                                                                                                                          
+컴공     2 C1701      이정민                                                                                                                          
+정통     2 T1702      이정필                                                                                                                          
+
+SQL> @ex07-26-04.sql
+SQL> SELECT * FROM Course
+  2  /
+
+COURS TITLE              C_NUMBER PRO COURSE_FEES                                                                                                     
+----- ---------------- ---------- --- -----------                                                                                                     
+L0011 TOEIC연구                 2                                                                                                                     
+L0013 문학개론                  2                                                                                                                     
+L1011 컴퓨터구조                2 P11                                                                                                                 
+L1012 웹디자인                  2           20000                                                                                                     
+L1021 데이터베이스              2 P12                                                                                                                 
+L1022 정보통신개론              2 P21                                                                                                                 
+L1031 SQL응용                   3 P12       50000                                                                                                     
+L1032 JAVA                      3 P13       30000                                                                                                     
+L1041 컴퓨터네트워크            2 P21                                                                                                                 
+L1042 델파이                    3 P13       50000                                                                                                     
+L1051 웹서버관리                2 P11                                                                                                                 
+L2031 게임이론                  3           50000                                                                                                     
+L2061 스프링프레임워크          3           50000                                                                                                     
+L1061 ERP실무                   3 P12       50000                                                                                                     
+L4012 세무행정학                3 P51       50000                                                                                                     
+L2033 게임프로그래밍            3 P24       40000                                                                                                     
+L1043 JSP프로그래밍             3           50000                                                                                                     
+L4011 경영정보시스템            3 P41       30000                                                                                                     
+L1062 그룹웨어구축              3 P13       40000                                                                                                     
+
+19 개의 행이 선택되었습니다.
+
+SQL> @ ex08-39.sql
+SQL> SELECT Dept_ID, Year, student_ID, name, address
+  2  FROM   student
+  3  WHERE  REGEXP_LIKE (Address, '송파구|수성구')
+  4  /
+
+DEPT_ID  Y STUDENT_ID NAME     ADDRESS                                                                                                                
+-------- - ---------- -------- --------------------                                                                                                   
+컴공     2 C1701      이정민   대구시 수성구                                                                                                          
+컴공     1 C1801      김대현   서울시 송파구                                                                                                          
+
+SQL> @ ex09-18.sql
+SQL> SELECT Course_ID, Student_ID, SCORE,
+  2  	    RANK()	 OVER (ORDER BY SCORE DESC) "석차",
+  3  	    DENSE_RANK() OVER (ORDER BY SCORE DESC) "순위",
+  4  	    ROW_NUMBER() OVER (ORDER BY SCORE DESC) "순서"
+  5  FROM   SG_SCORES
+  6  WHERE  Student_ID = 'C1701'
+  7  /
+
+COURS STUDENT_ID      SCORE       석차       순위       순서                                                                                          
+----- ---------- ---------- ---------- ---------- ----------                                                                                          
+L1022 C1701              97          1          1          1                                                                                          
+L1011 C1701              97          1          1          2                                                                                          
+L1021 C1701              96          3          2          3                                                                                          
+L1031 C1701              96          3          2          4                                                                                          
+L1032 C1701              93          5          3          5                                                                                          
+L1051 C1701              89          6          4          6                                                                                          
+L2061 C1701              87          7          5          7                                                                                          
+L1042 C1701              83          8          6          8                                                                                          
+
+8 개의 행이 선택되었습니다.
+
+SQL> @ ex10-12.sql
+SQL> SELECT SG.STUDENT_ID, YEAR, NAME, SG.COURSE_ID, TITLE,
+  2  	    C_NUMBER, SCORE, GRADE
+  3  FROM   SG_SCORES SG INNER JOIN STUDENT S
+  4  			    ON (SG.STUDENT_ID = S.STUDENT_ID)
+  5  			 INNER JOIN COURSE C
+  6  			     ON (SG.COURSE_ID = C.COURSE_ID)
+  7  WHERE  SG.STUDENT_ID = 'C1701'
+  8  /
+
+STUDENT_ID Y NAME     COURS TITLE              C_NUMBER      SCORE GR                                                                                 
+---------- - -------- ----- ---------------- ---------- ---------- --                                                                                 
+C1701      2 이정민   L1011 컴퓨터구조                2         97 A+                                                                                 
+C1701      2 이정민   L1021 데이터베이스              2         96 A+                                                                                 
+C1701      2 이정민   L1022 정보통신개론              2         97 A+                                                                                 
+C1701      2 이정민   L1031 SQL응용                   3         96 A+                                                                                 
+C1701      2 이정민   L1032 JAVA                      3         93 A+                                                                                 
+C1701      2 이정민   L1042 델파이                    3         83 A+                                                                                 
+C1701      2 이정민   L1051 웹서버관리                2         89 A+                                                                                 
+C1701      2 이정민   L2061 스프링프레임워크          3         87 A+                                                                                 
+
+8 개의 행이 선택되었습니다.
+
+SQL> @ ex11-13.sql
+SQL> SELECT *
+  2  FROM   (SELECT ROWNUM num,a.*
+  3  	     FROM (SELECT Student_ID, Name, Title, C_Number, Score
+  4  		 FROM SG_Scores INNER JOIN Course USING (Course_ID)
+  5  			     INNER JOIN Student USING (Student_ID)
+  6  		  WHERE  Score IS NOT NULL
+  7  		  ORDER BY 5 DESC, 4 DESC) a
+  8  	      )
+  9  WHERE  num BETWEEN 11 AND 15
+ 10  /
+
+       NUM STUDENT_ID NAME     TITLE              C_NUMBER      SCORE                                                                                 
+---------- ---------- -------- ---------------- ---------- ----------                                                                                 
+        11 C1701      이정민   데이터베이스              2         96                                                                                 
+        12 C1702      박주영   스프링프레임워크          3         95                                                                                 
+        13 C1602      서희경   SQL응용                   3         94                                                                                 
+        14 C1701      이정민   JAVA                      3         93                                                                                 
+        15 C1602      서희경   스프링프레임워크          3         93                                                                                 
+
+SQL> @ ex12-10.sql
+SQL> SELECT *
+  2  FROM  SCORE_LIST
+  3  WHERE STUDENT_ID = 'C1701'
+  4  /
+
+STUDENT_ID COURS TITLE                 SCORE GR                                                                                                       
+---------- ----- ---------------- ---------- --                                                                                                       
+C1701      L1011 컴퓨터구조               97 A+                                                                                                       
+C1701      L1021 데이터베이스             96 A+                                                                                                       
+C1701      L1022 정보통신개론             97 A+                                                                                                       
+C1701      L1031 SQL응용                  96 A+                                                                                                       
+C1701      L1032 JAVA                     93 A+                                                                                                       
+C1701      L1042 델파이                   83 A+                                                                                                       
+C1701      L1051 웹서버관리               89 A+                                                                                                       
+C1701      L2061 스프링프레임워크         87 A+                                                                                                       
+
+8 개의 행이 선택되었습니다.
+
+SQL> @ ex13-01.sql
+SQL> SELECT OBJECT_NAME, OBJECT_TYPE
+  2  FROM   USER_OBJECTS
+  3  WHERE  OBJECT_TYPE = 'INDEX'
+  4  ORDER  BY 1
+  5  /
+
+OBJECT_NAME                    OBJECT_TYPE                                                                                                            
+------------------------------ ---------------                                                                                                        
+COURSE_PK                      INDEX                                                                                                                  
+DEPARTMENT_PK                  INDEX                                                                                                                  
+DR$EC_PRODUCT_INFO_INX$X       INDEX                                                                                                                  
+DR$STUDENT_ADDRESS_INX$X       INDEX                                                                                                                  
+EC_BASKET_PK                   INDEX                                                                                                                  
+EC_MEMBER_NAME_INX             INDEX                                                                                                                  
+EC_MEMBER_PK                   INDEX                                                                                                                  
+EC_MEMBER_UK                   INDEX                                                                                                                  
+EC_ORDER_PK                    INDEX                                                                                                                  
+EC_PRODUCT_COMPANY_INX         INDEX                                                                                                                  
+EC_PRODUCT_INFO_INX            INDEX                                                                                                                  
+EC_PRODUCT_PK                  INDEX                                                                                                                  
+PROFESSOR_PK                   INDEX                                                                                                                  
+PROFESSOR_UK                   INDEX                                                                                                                  
+SG_SCORES_PK                   INDEX                                                                                                                  
+STUDENT_ADDRESS_INX            INDEX                                                                                                                  
+STUDENT_BIRTH_INX              INDEX                                                                                                                  
+STUDENT_NAME_INX               INDEX                                                                                                                  
+STUDENT_PK                     INDEX                                                                                                                  
+STUDENT_TELEPHONE_INX          INDEX                                                                                                                  
+STUDENT_UK                     INDEX                                                                                                                  
+SYS_IOT_TOP_286337             INDEX                                                                                                                  
+
+OBJECT_NAME                    OBJECT_TYPE                                                                                                            
+------------------------------ ---------------                                                                                                        
+SYS_IOT_TOP_286342             INDEX                                                                                                                  
+SYS_IOT_TOP_286421             INDEX                                                                                                                  
+SYS_IOT_TOP_286426             INDEX                                                                                                                  
+
+25 개의 행이 선택되었습니다.
+
+SQL> SET ECHO OFF
+SQL> spool off

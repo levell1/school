@@ -1,0 +1,4 @@
+SELECT *
+FROM  COURSE
+WHERE Professor_ID = 'P23'
+/

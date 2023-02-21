@@ -1,0 +1,5 @@
+SELECT Student_ID,Name,ID_Number,
+       TO_DATE(SUBSTR(ID_NUMBER, 1, 6), 'RRMMDD') "RRMMDD변환",
+       TO_DATE(SUBSTR(ID_NUMBER, 1, 6), 'YYMMDD') "YYMMDD변환"
+FROM   STUDENT
+/

@@ -1,0 +1,3 @@
+ALTER SEQUENCE Order_Seq
+MAXVALUE      5000
+/

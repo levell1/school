@@ -1,0 +1,7 @@
+SELECT Course_ID, Student_ID, SCORE,
+       RANK()       OVER (ORDER BY SCORE DESC) "석차",
+       DENSE_RANK() OVER (ORDER BY SCORE DESC) "순위",
+       ROW_NUMBER() OVER (ORDER BY SCORE DESC) "순서"
+FROM   SG_SCORES
+WHERE  Student_ID = 'C1701'
+/

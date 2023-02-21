@@ -1,0 +1,4 @@
+UPDATE Student_BUSINESS_VIEW
+SET    DEPT_ID   ='วเมค'
+WHERE  STUDENT_ID = 'B1801'
+/

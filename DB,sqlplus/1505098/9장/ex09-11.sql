@@ -1,0 +1,5 @@
+SELECT  Dept_ID, YEAR , COUNT(*)
+FROM    Student
+GROUP   BY CUBE(DEPT_ID,YEAR)
+ORDER   BY 1,2
+/

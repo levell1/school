@@ -1,0 +1,5 @@
+SELECT Dept_ID , YEAR,STUDENT_ID,NAME,I_DATE "입학년도",
+I_DATE + TO_YMINTERVAL('4-0') "졸업예정년도"
+FROM   STUDENT
+WHERE  Dept_ID = '컴공' AND YEAR = 1
+/

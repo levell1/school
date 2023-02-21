@@ -1,0 +1,2 @@
+DROP SEQUENCE ST_Seq
+/

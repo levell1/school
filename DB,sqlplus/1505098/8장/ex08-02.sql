@@ -1,0 +1,4 @@
+SELECT Title, LENGTH(Title), LENGTHB(Title)
+FROM   Course
+ORDER  BY 2 DESC
+/

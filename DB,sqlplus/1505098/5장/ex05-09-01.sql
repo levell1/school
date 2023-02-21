@@ -1,0 +1,3 @@
+ALTER  TABLE    Professor
+DROP   PRIMARY KEY CASCADE
+/

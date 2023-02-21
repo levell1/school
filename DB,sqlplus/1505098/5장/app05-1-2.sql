@@ -1,0 +1,11 @@
+CREATE TABLE EC_Member(
+UserID     VARCHAR2(10)  PRIMARY KEY,
+Passwd     VARCHAR2(10)  NOT NULL,
+Name       VARCHAR2(10)  NOT NULL,
+Regist_No  VARCHAR2(14)  NOT NULL   CONSTRAINT	EC_Member_uk UNIQUE,
+Email      VARCHAR2(20),
+Telephone  VARCHAR2(13)  NOT NULL,
+Address    VARCHAR2(40),
+Buycash    NUMBER(9)     DEFAULT 0,
+Timestamp  DATE          DEFAULT SYSDATE)
+/

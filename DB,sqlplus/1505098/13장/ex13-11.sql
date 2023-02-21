@@ -1,0 +1,3 @@
+ALTER   INDEX Student_Name_Inx
+REBUILD NOREVERSE
+/

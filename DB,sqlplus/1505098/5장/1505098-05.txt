@@ -1,0 +1,156 @@
+SQL> SELECT * FROM USER_CATALOG;
+
+TABLE_NAME                     TABLE_TYPE                                                                                                             
+------------------------------ ----------------------                                                                                                 
+DEPARTMENT                     TABLE                                                                                                                  
+PROFESSOR                      TABLE                                                                                                                  
+SG_SCORES                      TABLE                                                                                                                  
+STUDENT                        TABLE                                                                                                                  
+T_COURSE                       TABLE                                                                                                                  
+
+SQL> get app05-1-1.sql
+  1  CREATE TABLE EC_Product	(
+  2  Product_Code   VARCHAR2(10)   PRIMARY KEY,
+  3  Product_Name   VARCHAR2(20)   NOT NULL,
+  4  Standard       VARCHAR2(20),
+  5  Unit           VARCHAR2(10),
+  6  Unit_Price     NUMBER(7)      NOT NULL,
+  7  Left_Qty       NUMBER(5)      NOT NULL,
+  8  Company        VARCHAR2(20),
+  9  ImageName      VARCHAR2(20),
+ 10  Info           VARCHAR2(50),
+ 11* Detail_Info    VARCHAR2(255))
+SQL> /
+
+테이블이 생성되었습니다.
+
+SQL> get app05-1-2.sql
+  1  CREATE TABLE EC_Member(
+  2  UserID     VARCHAR2(10)  PRIMARY KEY,
+  3  Passwd     VARCHAR2(10)  NOT NULL,
+  4  Name       VARCHAR2(10)  NOT NULL,
+  5  Regist_No  VARCHAR2(14)  NOT NULL   CONSTRAINT	EC_Member_uk UNIQUE,
+  6  Email      VARCHAR2(20),
+  7  Telephone  VARCHAR2(13)  NOT NULL,
+  8  Address    VARCHAR2(40),
+  9  Buycash    NUMBER(9)     DEFAULT 0,
+ 10* Timestamp  DATE          DEFAULT SYSDATE)
+SQL> /
+
+테이블이 생성되었습니다.
+
+SQL> get app05-1-3.sql
+  1  CREATE TABLE EC_Basket(
+  2  Order_No     VARCHAR2(10)  PRIMARY KEY,
+  3  Order_ID     VARCHAR2(10)  NOT NULL  CONSTRAINT EC_Basket_fk1
+  4                                       REFERENCES EC_Member,
+  5  Product_Code VARCHAR2(10)  NOT NULL  CONSTRAINT EC_Basket_fk2
+  6                                       REFERENCES EC_Product,
+  7  Order_Qty    NUMBER(3)     NOT NULL,
+  8* Order_Date   DATE          DEFAULT SYSDATE)
+SQL> /
+
+테이블이 생성되었습니다.
+
+SQL> get app05-1-4.sql
+  1  CREATE TABLE EC_Order(
+  2  Order_No   	VARCHAR2(10) PRIMARY KEY,
+  3  Order_ID   	VARCHAR2(10) NOT NULL,
+  4  Product_Code 	VARCHAR2(10) NOT NULL,
+  5  Order_Qty    	NUMBER(3)    NOT NULL,
+  6  Csel        	VARCHAR(10),
+  7  CMoney      	NUMBER(9),
+  8  Cdate       	DATE,
+  9  Mdate       	DATE,
+ 10* Gubun       	VARCHAR(10))
+SQL> /
+
+테이블이 생성되었습니다.
+
+SQL> get app05-2.sql
+  1* SELECT	*	FROM USER_CATALOG
+SQL> /
+
+TABLE_NAME                     TABLE_TYPE                                                                                                             
+------------------------------ ----------------------                                                                                                 
+DEPARTMENT                     TABLE                                                                                                                  
+EC_BASKET                      TABLE                                                                                                                  
+EC_MEMBER                      TABLE                                                                                                                  
+EC_ORDER                       TABLE                                                                                                                  
+EC_PRODUCT                     TABLE                                                                                                                  
+PROFESSOR                      TABLE                                                                                                                  
+SG_SCORES                      TABLE                                                                                                                  
+STUDENT                        TABLE                                                                                                                  
+T_COURSE                       TABLE                                                                                                                  
+
+9 개의 행이 선택되었습니다.
+
+SQL> describe EC_Basket
+ 이름                                                                                널?      유형
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ ORDER_NO                                                                            NOT NULL VARCHAR2(10)
+ ORDER_ID                                                                            NOT NULL VARCHAR2(10)
+ PRODUCT_CODE                                                                        NOT NULL VARCHAR2(10)
+ ORDER_QTY                                                                           NOT NULL NUMBER(3)
+ ORDER_DATE                                                                                   DATE
+
+SQL> get app05-4.sql
+  1  ALTER TABLE EC_Product
+  2* DROP COLUMN Detail_info
+SQL> /
+
+테이블이 변경되었습니다.
+
+
+SQL> get app05-5.sql
+  1  ALTER TABLE	EC_Product
+  2* MODIFY  (Info VARCHAR2(40))
+SQL> /
+
+테이블이 변경되었습니다.
+
+SQL> get app05-6.sql
+  1  ALTER TABLE EC_Order
+  2* MODIFY (Gubun VARCHAR2(20))
+SQL> /
+
+테이블이 변경되었습니다.
+
+SQL> get app05-7.sql
+  1  ALTER TABLE EC_Order
+  2  ADD CONSTRAINT EC_Order_fk FOREIGN KEY (Product_Code)
+  3*                            REFERENCES EC_Product
+SQL> /
+
+테이블이 변경되었습니다.
+
+SQL> get app05-8.sql
+  1  SELECT  CONSTRAINT_NAME, CONSTRAINT_TYPE, SEARCH_CONDITION
+  2  FROM	USER_CONSTRAINTS
+  3* WHERE 	TABLE_NAME = 'EC_ORDER'
+SQL> /
+
+CONSTRAINT_NAME      CO SEARCH_CONDITION                                                                                                              
+-------------------- -- ---------------------------------------------------------                                                                     
+SYS_C00161261        C  "ORDER_ID" IS NOT NULL                                                                                                        
+SYS_C00161262        C  "PRODUCT_CODE" IS NOT NULL                                                                                                    
+SYS_C00161263        C  "ORDER_QTY" IS NOT NULL                                                                                                       
+SYS_C00161264        P                                                                                                                                
+EC_ORDER_KF          R                                                                                                                                
+
+SQL> get app05-9.sql
+  1  SELECT  CONSTRAINT_NAME, COLUMN_NAME, POSITION
+  2  FROM    USER_CONS_COLUMNS
+  3* WHERE   TABLE_NAME = 'EC_ORDER'
+SQL> /
+
+CONSTRAINT_NAME      COLUMN_NAME     POSITION                                                                                                         
+-------------------- --------------- --------                                                                                                         
+SYS_C00161261        ORDER_ID                                                                                                                         
+SYS_C00161262        PRODUCT_CODE                                                                                                                     
+SYS_C00161263        ORDER_QTY                                                                                                                        
+SYS_C00161264        ORDER_NO               1                                                                                                         
+EC_ORDER_KF          PRODUCT_CODE           1                                                                                                         
+
+SQL> 
+SQL> spool off

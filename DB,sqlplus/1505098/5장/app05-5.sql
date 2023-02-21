@@ -1,0 +1,3 @@
+ALTER TABLE	EC_Product
+MODIFY  (Info VARCHAR2(40))
+/

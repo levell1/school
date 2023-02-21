@@ -1,0 +1,7 @@
+SELECT STUDENT_ID, COUNT(1) "Ãëµæ°ú¸ñ¼ö",
+       TO_CHAR(AVG(Score),'99.99') "Æò±Õ"
+FROM   SG_SCORES
+GROUP  BY STUDENT_ID
+HAVING COUNT(1) >= 8
+ORDER BY 1
+/

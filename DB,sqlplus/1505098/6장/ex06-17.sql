@@ -1,0 +1,5 @@
+SELECT Student_ID, Course_ID, Score
+FROM   SG_Scores
+WHERE  Score BETWEEN 90 AND 94
+ORDER  BY 3 DESC
+/

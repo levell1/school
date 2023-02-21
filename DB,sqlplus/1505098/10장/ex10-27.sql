@@ -1,0 +1,7 @@
+SELECT T1.PROFESSOR_ID, T1.DEPT_ID, T1.DUTY,
+       T1.NAME || ' ' || T1.POSITION "교수명",
+       T2.NAME || ' ' || T2.DUTY "관리자명"
+FROM   PROFESSOR T1 INNER JOIN PROFESSOR T2
+                    ON T1.MGR = T2.PROFESSOR_ID
+ORDER BY 2, 3
+/

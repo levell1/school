@@ -1,0 +1,11 @@
+SELECT Student_ID, Course_ID, Score,
+      	CASE	WHEN Score BETWEEN 90 AND 100 THEN 'A'
+		WHEN Score BETWEEN 80 AND 89 THEN 'B'
+		WHEN Score BETWEEN 70 AND 79 THEN 'C'
+		WHEN Score BETWEEN 60 AND 69 THEN 'D'
+					  ELSE 'F'
+	END "µî±Þ"
+FROM	SG_Scores
+WHERE	Student_ID = 'C1601'
+ORDER	BY 2
+/

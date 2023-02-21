@@ -1,0 +1,4 @@
+SELECT MAX(SCORE), MIN(SCORE)
+FROM   SG_Scores
+WHERE  Course_ID = 'L1031'
+/

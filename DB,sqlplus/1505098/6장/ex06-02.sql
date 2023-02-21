@@ -1,0 +1,3 @@
+SELECT DISTINCT Dept_ID
+FROM   Professor
+/
